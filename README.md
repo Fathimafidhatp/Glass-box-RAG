@@ -39,13 +39,9 @@ This creates an explainable AI experience where every response is grounded in th
 
 ## Demo
 
-Replace the GIF below with your project demonstration.
-
-```text
-assets/demo.gif
-```
-
----
+<p align="center">
+  <img src="assets/demo.gif" alt="Glass Box RAG Demo" width="100%">
+</p>
 
 ## Tech Stack
 
