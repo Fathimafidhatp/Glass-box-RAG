@@ -69,39 +69,36 @@ This creates an explainable AI experience where every response is grounded in th
 # 🏗️ System Architecture
 
 ```mermaid
-flowchart LR
+flowchart TB
 
-A[User] --> B[Chat Interface<br/>Next.js + React]
+subgraph Offline_Indexing
+A[Repository]
+--> B[Repository Scanner]
+--> C[Code Chunking]
+--> D[Embedding Model]
+--> E[(ChromaDB)]
+end
 
-B --> C["POST /api/chat"]
+subgraph Online_RAG
+F[User]
+--> G[Next.js Chat UI]
+--> H["API Route /api/chat"]
 
-C --> D["queryRepository()"]
+H --> E
+E --> I[Retrieve Top 5 Chunks]
+I --> J[Prompt Builder]
+J --> K["Groq Llama 3.3 70B"]
+K --> L[Streaming Answer]
+L --> G
+end
 
-D --> E[Generate Query Embedding]
-
-E --> F[(ChromaDB)]
-
-F --> G[Top 5 Relevant Code Chunks]
-
-G --> H[buildRagPrompt()]
-
-H --> I[Groq Llama 3.3 70B]
-
-I --> J[Streaming Response]
-
-J --> B
-
-B --> K[Parse Citation Tags]
-
-K --> L["POST /api/source"]
-
-L --> M[Read Source File]
-
-M --> N[Source Viewer]
-
-N --> O[Highlight Referenced Lines]
+subgraph Citation_System
+L --> M["Citation Tags"]
+M --> N["API /api/source"]
+N --> O[Repository File]
+O --> P[Source Viewer]
+end
 ```
-
 ```text
                      User
                       │
