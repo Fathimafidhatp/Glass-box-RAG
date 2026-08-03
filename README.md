@@ -37,11 +37,6 @@ This creates an explainable AI experience where every response is grounded in th
 
 ---
 
-## Demo
-
-<p align="center">
-  <img src="assets/demo.gif" alt="Glass Box RAG Demo" width="100%">
-</p>
 
 ## Tech Stack
 
@@ -71,6 +66,41 @@ This creates an explainable AI experience where every response is grounded in th
 ---
 
 # Project Architecture
+# 🏗️ System Architecture
+
+```mermaid
+flowchart LR
+
+A[User] --> B[Chat Interface<br/>Next.js + React]
+
+B --> C["POST /api/chat"]
+
+C --> D["queryRepository()"]
+
+D --> E[Generate Query Embedding]
+
+E --> F[(ChromaDB)]
+
+F --> G[Top 5 Relevant Code Chunks]
+
+G --> H[buildRagPrompt()]
+
+H --> I[Groq Llama 3.3 70B]
+
+I --> J[Streaming Response]
+
+J --> B
+
+B --> K[Parse Citation Tags]
+
+K --> L["POST /api/source"]
+
+L --> M[Read Source File]
+
+M --> N[Source Viewer]
+
+N --> O[Highlight Referenced Lines]
+```
 
 ```text
                      User
