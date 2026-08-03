@@ -65,40 +65,42 @@ This creates an explainable AI experience where every response is grounded in th
 
 ---
 
-# Project Architecture
-# 🏗️ System Architecture
+
+#  System Architecture
 
 ```mermaid
-flowchart TB
+flowchart LR
 
-subgraph Offline_Indexing
+subgraph Indexing
 A[Repository]
---> B[Repository Scanner]
---> C[Code Chunking]
---> D[Embedding Model]
---> E[(ChromaDB)]
+-->B[Scanner]
+-->C[Chunking]
+-->D[Embeddings]
+-->E[(ChromaDB)]
 end
 
-subgraph Online_RAG
+subgraph Chat
 F[User]
---> G[Next.js Chat UI]
---> H["API Route /api/chat"]
-
-H --> E
-E --> I[Retrieve Top 5 Chunks]
-I --> J[Prompt Builder]
-J --> K["Groq Llama 3.3 70B"]
-K --> L[Streaming Answer]
-L --> G
+-->G[Next.js]
+-->H["API /chat"]
+H-->E
+E-->I[Retriever]
+I-->J[Groq]
+J-->K[Streaming Response]
+K-->G
 end
 
-subgraph Citation_System
-L --> M["Citation Tags"]
-M --> N["API /api/source"]
-N --> O[Repository File]
-O --> P[Source Viewer]
+subgraph Explainability
+K-->L[Citations]
+L-->M["API /source"]
+M-->N[Highlighted Source]
 end
+
+style E fill:#fef3c7
+style J fill:#dbeafe
+style N fill:#dcfce7
 ```
+# Project Architecture
 ```text
                      User
                       │
